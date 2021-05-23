@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
     <!-- End CSS -->
+    <!-- JS -->
+    <script src="{{url_for('static', filename='main.js')}}"></script>
+    <!-- End JS -->
 
     {% if title %}
         <title>MockBuster - {{ title }}</title>
@@ -18,21 +21,103 @@
     {% block head %} {% endblock %}
 </head>
 <body>
-    <div class="container">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{category}}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    {% block content %} {% endblock %}
+    <!-- NavBar -->
+    <div class="wrapper">
+    <header> <nav>
+        <div class="menu-icon">
+           <i class="fa fa-bars fa-2x"></i>
+        </div>
+        <div class="logo">
+           LOGO
+        </div>
+        <div class="menu">
+           <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Contact</a></li>
+           </ul>
+        </div>
+     </nav> </header>
+     </div>
+    <!-- End NavBar -->
+    <!-- Main Body -->
+    <main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{category}}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content %} {% endblock %}
+        </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </main>
 </body>
+    <!-- End Main -->
+    <!-- Site footer -->
+<footer class="site-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <h6>About</h6>
+          <p class="text-justify">MockBuster is THE premier DVD/VHS collection mock Point of Sale system this side of Bend, Oregon. 
+            Utilizing several new (to me) technologies, including SQL and state of the art API's, along with Flask for Python. Created in 2021 as a summer 
+            project it has grown to be utilized by nearly a quarter of a dozen people. This project is offered as is and there is no 
+            guarantee of its precision. Thank you for visiting.</p>
+        </div>
+
+        <div class="col-xs-6 col-md-3">
+          <h6>Technologies</h6>
+          <ul class="footer-links">
+            <li><a href="#">Python</a></li>
+            <li><a href="#">Javascript</a></li>
+            <li><a href="#">HTML5</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">SQL</a></li>
+          </ul>
+        </div>
+
+        <div class="col-xs-6 col-md-3">
+          <h6>Quick Links</h6>
+          <ul class="footer-links">
+            <li><a href="{{url_for('about_us')}}">About Us</a></li>
+            <li><a href="{{url_for('contact')}}">Contact Us</a></li>
+            <li><a href="https://github.com/GascaK/MockBuster.io">Contribute</a></li>
+            <li><a href="{{url_for('privacy')}}">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p class="copyright-text">Copyright &copy; 2021 All Rights Reserved by 
+       <a href="#">MockBuster</a>. No affiliation.
+          </p>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <ul class="social-icons">
+            <li><a class="github" href="https://github.com/GascaK/"><i class="fa fa-github"></i></a></li>
+            <li><a class="twitter" href="https://twitter.com/draftjoker"><i class="fa fa-twitter"></i></a></li>
+            <li><a class="linkedin" href="https://www.linkedin.com/in/gascak/"><i class="fa fa-linkedin"></i></a></li>   
+          </ul>
+        </div>
+      </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </html>

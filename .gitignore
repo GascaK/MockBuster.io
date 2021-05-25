@@ -6,3 +6,5 @@ mbuster/__pycache__/
 .vscode/
 
 env/
+
+__pycache__/

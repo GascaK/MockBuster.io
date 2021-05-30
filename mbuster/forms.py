@@ -54,4 +54,6 @@ class AddMovieForm(FlaskForm):
     stock = BooleanField('Checked Out')
     submit = SubmitField('Add')
     
+class UserMovieForm(FlaskForm):
+    delete_submit = SubmitField('X')
     

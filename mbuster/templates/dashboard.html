@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="content-section">
-    <form method="POST" action="">
+    <form method="POST" action="#">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Add Movie</legend>
@@ -31,13 +31,39 @@
 </div>
 <br><br>
 {% if current_user %}
-    <div>
-        <h1>{{ current_user.username}}'s Movies</h1>
-        {% for movie in movies %}
-            {{ movie }} <br>
-        {% endfor %}
+    <div id="dash-table">
+        <h1>{{ current_user.username }}'s Movies</h1>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Stock Count</th>
+                    <th scope="col">In Stock</th>
+                    <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for movie in movies %}
+                <tr>
+                    <td>{{ movie.m_title }}</td>
+                    <td>{{ movie.m_count }}</td>
+                    <td>{{ movie.m_stock }}</td>
+                    <td>
+                        <form action="{{ url_for('delete_movie', movie_id=movie.id) }}" method="POST">
+                            <input type="submit" value="X" class="btn btn-danger"/>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
     </div>
 {% else %}
-    <h1>No User</h1>
+    <h1>No User - Wait how did you even get here?</h1>
 {% endif %}
+
+<!-- Ajax for Table and Search functionality. -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{{url_for('static', filename='dashboard.js')}}"></script>
+<!-- -->
 {% endblock content %}

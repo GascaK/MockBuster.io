@@ -23,6 +23,7 @@ class Movies(db.Model):
     m_title = db.Column(db.String(30), nullable=False, default="")
     m_count = db.Column(db.Integer, default=1)
     m_stock = db.Column(db.Boolean, nullable=False, default=True)
+    imdb_id = db.Column(db.String(20), default="")
 
     def __repr__(self):
         return f"Movie('{self.m_title}', '{self.m_stock}')"

@@ -13,7 +13,7 @@ body {
 header {
     width: 100%;
     height: 25vh;
-    background: url(https://wallpaper.wiki/wp-content/uploads/2017/05/wallpaper.wiki-Beautiful-Full-HD-Wallpaper-Download-Free-PIC-WPE0010098.jpg) no-repeat 50% 50%;
+    background: url('../assets/header.jpg') no-repeat 50% 50%;
     background-size: cover;
 }
 
@@ -30,7 +30,7 @@ header {
     position: fixed;
     float: left;
     margin: 16px 46px;
-    color: rgb(219, 240, 32);
+    color: rgb(171, 185, 46);
     font-weight: bold;
     font-size: 20px;
     letter-spacing: 2px;

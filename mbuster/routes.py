@@ -50,13 +50,15 @@ def logout():
 def dashboard():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
-
+    
     form = AddMovieForm()
     movie_form = UserMovieForm()
 
     # Query Movies DB and get movie data.
     ask = Movies.query.filter_by(user_id=current_user.id)
     movies = ask.all()
+
+    print(movies)
 
     if form.validate_on_submit():
         if ask.filter_by(m_title=form.movie_title.data).first():
@@ -71,7 +73,11 @@ def dashboard():
             flash(f'{form.movie_title.data} added!', 'success')
             return redirect(url_for("dashboard"))
 
-    return render_template("dashboard.html", title="", movie_form=movie_form, form=form, movies=movies)
+    return render_template("dashboard.html", 
+                            title=f"{current_user.username}",
+                            movie_form=movie_form,
+                            form=form,
+                            movies=movies)
 
 # Delete movie form database url. Takes 1 movie_id parameter.
 @app.route("/deletemovie-<int:movie_id>", methods=["POST"])

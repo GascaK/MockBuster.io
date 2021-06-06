@@ -1,0 +1,8 @@
+{
+    "flask": {
+        "image": ":mbuster.mbuster-container.1",
+        "ports": {
+            "8080": "HTTP"
+        }
+    }
+}

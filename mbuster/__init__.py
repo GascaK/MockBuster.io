@@ -18,6 +18,7 @@ if(app.config['SECRET_KEY'] == None):
     print("Secret Key not set!")
     quit()
 
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)

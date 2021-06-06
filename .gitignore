@@ -8,6 +8,3 @@ mbuster/__pycache__/
 env/
 
 __pycache__/
-
-# Dockerfile has sensitive setup info.
-Dockerfile

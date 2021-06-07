@@ -92,12 +92,14 @@ def delete_movie(movie_id):
         db.session.delete(deleted)
         db.session.commit()
         flash(f"Deleted movie {movie_id}", "success")
+    else:
+        flash(f"Movie not in Database. {movie_id}. Refresh Page", "warning")
 
     return redirect(url_for("dashboard"))
 
 @app.route("/about")
 def about_us():
-    return render_template("about.html")
+    return render_template("about.html", title="AboutME")
 
 @app.route("/contact")
 def contact():

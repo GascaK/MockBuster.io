@@ -20,7 +20,7 @@
 </head>
 <body>
     <!-- NavBar -->
-    <div class="wrapper">
+    <div class="nav-wrapper">
     <header> <nav>
         <div class="menu-icon">
            <i class="fa fa-bars fa-2x"></i>
@@ -44,11 +44,10 @@
         </div>
      </nav> </header>
      </div>
-    <!-- End NavBar -->
     <!-- Main Body -->
     <main role="main" class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8 col-lg-10">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -110,13 +109,16 @@
           </p>
         </div>
 
-        <div class="col-md-4 col-sm-6 col-xs-12">
+        <!-- <div class="col-md-4 col-sm-6 col-xs-12">
           <ul class="social-icons">
             <li><a class="github" href="https://github.com/GascaK/"><i class="fa fa-github"></i></a></li>
             <li><a class="twitter" href="https://twitter.com/draftjoker"><i class="fa fa-twitter"></i></a></li>
             <li><a class="linkedin" href="https://www.linkedin.com/in/gascak/"><i class="fa fa-linkedin"></i></a></li>   
           </ul>
-        </div>
+        </div> -->
+        <a href="https://twitter.com/draftjoker" class="icon-button twitter"><i class="icon-twitter"></i><span></span></a>
+        <a href="https://github.com/GascaK" class="icon-button github"><i class="icon-github"></i><span></span></a>
+        <a href="https://www.linkedin.com/in/gascak" class="icon-button linkedin"><i class="icon-linkedin"></i><span></span></a>
       </div>
     </div>
 </footer>

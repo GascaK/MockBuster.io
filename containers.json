@@ -1,8 +1,15 @@
 {
-    "flask": {
-        "image": ":mbuster.mbuster-container.1",
-        "ports": {
-            "8080": "HTTP"
-        }
+    "serviceName": "hello-world",
+    "containers": {
+       "hello-world": {
+          "image": ":hello-world.hello-world.1",
+          "ports": {
+             "5000": "HTTP"
+          }
+       }
+    },
+    "publicEndpoint": {
+       "containerName": "mbuster-container",
+       "containerPort": 5000
     }
-}
+  }

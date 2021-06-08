@@ -1,15 +1,15 @@
 {
-    "serviceName": "hello-world",
+    "serviceName": "mbuster-service",
     "containers": {
        "hello-world": {
-          "image": ":hello-world.hello-world.1",
+          "image": ":mbuster-service.mbuster.3",
           "ports": {
              "5000": "HTTP"
           }
        }
     },
     "publicEndpoint": {
-       "containerName": "mbuster-container",
+       "containerName": "mbuster",
        "containerPort": 5000
     }
   }

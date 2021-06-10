@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from imdb import IMDb
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -18,10 +19,12 @@ if(app.config['SECRET_KEY'] == None):
     print("Secret Key not set!")
     quit()
 
-
+# Flask objects.
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
+# IMDb object.
+ia = IMDb()
 
 from mbuster import routes

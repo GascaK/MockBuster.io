@@ -1,8 +1,8 @@
 from sqlalchemy.sql.elements import Null
 from mbuster.forms import RegistrationForm
-from flask import Flask, url_for, render_template, flash, redirect, request
+from flask import Flask, url_for, render_template, flash, redirect, jsonify, request
 from mbuster.forms import RegistrationForm, LoginForm, AddMovieForm, UserMovieForm
-from mbuster import app, db, bcrypt
+from mbuster import app, db, bcrypt, ia
 from mbuster.models import User, Movies
 from flask_login import login_user, logout_user, current_user
 
@@ -58,8 +58,6 @@ def dashboard():
     ask = Movies.query.filter_by(user_id=current_user.id)
     movies = ask.all()
 
-    print(movies)
-
     if form.validate_on_submit():
         if ask.filter_by(m_title=form.movie_title.data).first():
             flash('Movie already in list.', 'warning')
@@ -96,6 +94,13 @@ def delete_movie(movie_id):
         flash(f"Movie not in Database. {movie_id}. Refresh Page", "warning")
 
     return redirect(url_for("dashboard"))
+
+@app.route("/autocomplete", methods=["GET"])
+def autocomplete():
+    print('HERE')
+    search = ['TEST', 'Let it go', 'Lord of the Rings']
+    results = ['q' in search]
+    return jsonify(_results=results)
 
 @app.route("/about")
 def about_us():

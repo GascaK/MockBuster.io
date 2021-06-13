@@ -1,9 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 style="align-content: center;">404</h1><br>
-<h3 style="align-content: center; color: cornflowerblue;">Under Construction</h3>
-<br><br><br>
-<h3>Really really need to talk to me?</h3><h5>really?</h5>
-<h2>Email: gasca.kevin.a@gmail.com</h2>
+<div class="content-section">
+    <form action="" method="POST" class="action">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Contact Me</legend>
+            <div class="form-group">
+            {{ form.email.label(class="form-control-label") }}
+            {% if form.email.erorrs %}
+                {{ form.email(class="form-control form-contorl-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.email(class="form-control form-contorl-lg") }}
+            {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.subject.label(class="form-control-label") }}
+                {% if form.subject.erorrs %}
+                    {{ form.subject(class="form-control form-contorl-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.subject.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.subject(class="form-control form-contorl-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {{ form.content(class="form-control form-contorl-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </fieldset>
+    </form>
+</div>
 {% endblock content %}

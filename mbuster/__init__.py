@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_mail import Mail
 from imdb import IMDb
 
 app = Flask(__name__)
@@ -19,11 +20,22 @@ if(app.config['SECRET_KEY'] == None):
     print("Secret Key not set!")
     quit()
 
+app.config.update(dict(
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT = 587,
+    MAIL_USE_TLS = True,
+    MAIL_USE_SSL = False,
+    MAIL_USERNAME = 'test@gmail.com',
+    MAIL_PASSWORD = 'testloltest',
+))
+
+
 # Flask objects.
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
+mail = Mail(app)
 # IMDb object.
 ia = IMDb()
 

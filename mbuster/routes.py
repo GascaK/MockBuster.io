@@ -1,10 +1,13 @@
+import email
 from sqlalchemy.sql.elements import Null
 from mbuster.forms import RegistrationForm
 from flask import Flask, url_for, render_template, flash, redirect, jsonify, request
-from mbuster.forms import RegistrationForm, LoginForm, AddMovieForm, UserMovieForm
-from mbuster import app, db, bcrypt, ia
+from mbuster.forms import (RegistrationForm, LoginForm, AddMovieForm, UserMovieForm,
+                            ContactForm, RequestResetForm, ResetPasswordForm)
+from mbuster import app, db, bcrypt, ia, mail
 from mbuster.models import User, Movies
 from flask_login import login_user, logout_user, current_user
+from flask_mail import Message
 
 @app.route("/")
 @app.route("/home")
@@ -62,10 +65,12 @@ def dashboard():
         if ask.filter_by(m_title=form.movie_title.data).first():
             flash('Movie already in list.', 'warning')
         else:
+            search = ia.search_movie(form.movie_title.data)[0]
             nMovie = Movies(user_id= current_user.id,
                             m_title= form.movie_title.data,
                             m_stock= not form.stock.data, # Uno Reverse
-                            m_count=1)
+                            m_count=1,
+                            idmb_id=search)
             db.session.add(nMovie)
             db.session.commit()
             flash(f'{form.movie_title.data} added!', 'success')
@@ -95,21 +100,66 @@ def delete_movie(movie_id):
 
     return redirect(url_for("dashboard"))
 
-@app.route("/autocomplete", methods=["GET"])
-def autocomplete():
-    print('HERE')
-    search = ['TEST', 'Let it go', 'Lord of the Rings']
-    results = ['q' in search]
-    return jsonify(_results=results)
-
 @app.route("/about")
 def about_us():
     return render_template("about.html", title="AboutME")
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html")
+    form = ContactForm()
+
+    if form.validate_on_submit():
+        pass
+
+    return render_template("contact.html", title="Contact", form=form)
 
 @app.route("/privacy")
 def privacy():
     return render_template("privacy.html")
+
+@app.route("/reset-password", methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None:
+            send_reset_email(user)
+        flash("If email is located, reset message will be sent.", "success")
+        return redirect(url_for("login"))
+    
+    return render_template('reset_request.html', title='Reset', form=form)
+
+@app.route("/reset-password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash("That is an invalid or expired token", "warning")
+        return redirect(url_for('reset_request'))
+    
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hash_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hash_pw
+        db.session.commit()
+        flash(f'Your password has been updated and hashed.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('reset_token.html', title='Reset', form=form)
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message("Password Reset - MockBuster",
+                  sender="userhelp@mockbuster.io",
+                  recipients=[user.email])
+    msg.body = f'''To reset your password, visit the following link:
+{ url_for('reset_token', token=token, _external=True) }
+
+If you did not make this request simply ignore this email.
+    '''
+    mail.send(msg)

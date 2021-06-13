@@ -37,6 +37,7 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                    <th scope="col">IDMB #</th> 
                     <th scope="col">Title</th>
                     <th scope="col">Stock Count</th>
                     <th scope="col">In Stock</th>
@@ -46,6 +47,7 @@
               <tbody>
                 {% for movie in movies %}
                 <tr>
+                    <td>{{ movie.imdb_id }}</td>
                     <td>{{ movie.m_title }}</td>
                     <td>{{ movie.m_count }}</td>
                     <td>{{ movie.m_stock }}</td>

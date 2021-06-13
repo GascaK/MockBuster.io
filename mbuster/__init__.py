@@ -20,6 +20,7 @@ if(app.config['SECRET_KEY'] == None):
     print("Secret Key not set!")
     quit()
 
+# Mail configuration.
 app.config.update(dict(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = 587,

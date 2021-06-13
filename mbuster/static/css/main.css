@@ -17,6 +17,14 @@ body {
   background-size: cover;
 }
 
+#movies img, #movie img{
+  width: 100px;
+}
+
+#movies .well{
+  height: 240px;
+}
+
 /******************** NavBar CSS ********************/
 header {
     width: 100%;

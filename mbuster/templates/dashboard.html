@@ -2,30 +2,27 @@
 
 {% block content %}
 <div class="content-section">
-    <form method="POST" action="#">
+    <form method="POST" action="#" id="searchForm">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Add Movie</legend>
             <div class=form-group">
                 {{ form.movie_title.label(class="form-control-label") }}
                 {% if form.movie_title.errors %}
-                    {{ form.movie_title(class="form-control form-control-lg is-invalid") }}
+                    {{ form.movie_title(class="form-control form-control-lg is-invalid", id="searchBox") }}
                     <div class="invalid-feedback">
                     {% for error in form.movie_title.errors %}
                         <span>{{ error }}</span>
                     {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.movie_title(class="form-control form-control-lg", placeholder="Enter Movie title here...", id="searchBox") }}
-                    <div id="result"></div>
+                    {{ form.movie_title(class="form-control form-control-lg", placeholder="Enter Movie title here...", id="searchBox", autocomplete="off") }}
+                    <div class="form-group">
+                        {{ form.stock(class="btn btn-outline-info") }}
+                        {{ form.stock.label(class="form-check-label")}}
+                    </div>
+                    <div id="movies"></div>
                 {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.stock(class="btn btn-outline-info") }}
-                {{ form.stock.label(class="form-check-label")}}
-            </div>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
             </div>
         </fieldset>
     </form>
@@ -65,7 +62,10 @@
     <h1>No User - Wait how did you even get here?</h1>
 {% endif %}
 
+<!-- Axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <!-- Ajax for Table and Search functionality. -->
 <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
-<!-- -->
+
+
 {% endblock content %}

@@ -1,4 +1,5 @@
 import email
+from flask_login.utils import login_required
 from sqlalchemy.sql.elements import Null
 from mbuster.forms import RegistrationForm
 from flask import Flask, url_for, render_template, flash, redirect, jsonify, request
@@ -16,27 +17,35 @@ def index():
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    # Check if logged in.
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     
+    # Form submitted.
     form = RegistrationForm()
     if form.validate_on_submit():
+        # Hash password.
         hash_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        # User DB object.
         user = User(username=form.username.data, email=form.email.data, password=hash_pw)
         db.session.add(user)
         db.session.commit()
         flash(f'Account created! Congrats {form.username.data}!', 'success')
         return redirect(url_for('dashboard'))
+
     return render_template("register.html", title="Register", form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    # Check if logged in.
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
 
+    # Form submitted.
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+        # User is not empty and hashed pw is valid.
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, form.remember.data)
             return redirect(url_for('dashboard'))
@@ -46,11 +55,14 @@ def login():
 
 @app.route("/logout")
 def logout():
+    # Flask logout
     logout_user()
     return redirect(url_for('index'))
 
 @app.route("/dashboard", methods=['GET', 'POST'])
+@login_required
 def dashboard():
+    # Check if logged in.
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     
@@ -61,20 +73,21 @@ def dashboard():
     ask = Movies.query.filter_by(user_id=current_user.id)
     movies = ask.all()
 
-    if form.validate_on_submit():
-        if ask.filter_by(m_title=form.movie_title.data).first():
-            flash('Movie already in list.', 'warning')
-        else:
-            search = ia.search_movie(form.movie_title.data)[0]
-            nMovie = Movies(user_id= current_user.id,
-                            m_title= form.movie_title.data,
-                            m_stock= not form.stock.data, # Uno Reverse
-                            m_count=1,
-                            idmb_id=search)
-            db.session.add(nMovie)
-            db.session.commit()
-            flash(f'{form.movie_title.data} added!', 'success')
-            return redirect(url_for("dashboard"))
+    # # Form submitted
+    # if form.validate_on_submit():
+    #     if ask.filter_by(m_title=form.movie_title.data).first():
+    #         flash('Movie already in list.', 'warning')
+    #     else:
+    #         search = ia.search_movie(form.movie_title.data)
+    #         nMovie = Movies(user_id= current_user.id,
+    #                         m_title= form.movie_title.data,
+    #                         m_stock= not form.stock.data, # Uno Reverse
+    #                         m_count=1,
+    #                         imdb_id=int(search[0].getID()))
+    #         db.session.add(nMovie)
+    #         db.session.commit()
+    #         flash(f'{form.movie_title.data} added!', 'success')
+    #         return redirect(url_for("dashboard"))
 
     return render_template("dashboard.html", 
                             title=f"{current_user.username}",
@@ -84,6 +97,7 @@ def dashboard():
 
 # Delete movie form database url. Takes 1 movie_id parameter.
 @app.route("/deletemovie-<int:movie_id>", methods=["POST"])
+@login_required
 def delete_movie(movie_id):
     # Checks user is logged and authenticated.
     if not current_user.is_authenticated:
@@ -97,6 +111,31 @@ def delete_movie(movie_id):
         flash(f"Deleted movie {movie_id}", "success")
     else:
         flash(f"Movie not in Database. {movie_id}. Refresh Page", "warning")
+
+    return redirect(url_for("dashboard"))
+
+@app.route("/addmovie/<imdbID>", methods=["POST"])
+@login_required
+def add_movie(imdbID):
+    # Find User Movies
+    ask = Movies.query.filter_by(user_id=current_user.id)
+
+    # Check if Movie in Movies
+    if ask.filter_by(imdb_id=imdbID[2:]).first():
+        flash('Movie already in list.', 'warning')
+    else:
+        # API is slow. Refactor here.
+        search = ia.get_movie(imdbID[2:]) # API prepends TT
+        nMovie = Movies(user_id= current_user.id,
+                        m_title= search['title'],
+                        m_stock= True,
+                        m_count=1,
+                        imdb_id=search['imdbID']
+                        )
+        db.session.add(nMovie)
+        db.session.commit()
+        flash(f'{search} added!', 'success')
+        return redirect(url_for("dashboard"))
 
     return redirect(url_for("dashboard"))
 

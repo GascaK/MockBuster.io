@@ -70,24 +70,7 @@ def dashboard():
     movie_form = UserMovieForm()
 
     # Query Movies DB and get movie data.
-    ask = Movies.query.filter_by(user_id=current_user.id)
-    movies = ask.all()
-
-    # # Form submitted
-    # if form.validate_on_submit():
-    #     if ask.filter_by(m_title=form.movie_title.data).first():
-    #         flash('Movie already in list.', 'warning')
-    #     else:
-    #         search = ia.search_movie(form.movie_title.data)
-    #         nMovie = Movies(user_id= current_user.id,
-    #                         m_title= form.movie_title.data,
-    #                         m_stock= not form.stock.data, # Uno Reverse
-    #                         m_count=1,
-    #                         imdb_id=int(search[0].getID()))
-    #         db.session.add(nMovie)
-    #         db.session.commit()
-    #         flash(f'{form.movie_title.data} added!', 'success')
-    #         return redirect(url_for("dashboard"))
+    movies = Movies.query.filter_by(user_id=current_user.id).all()
 
     return render_template("dashboard.html", 
                             title=f"{current_user.username}",

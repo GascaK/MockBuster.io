@@ -13,15 +13,14 @@ function getMovies(searchText)
 			let movies = response.data.Search;
 			let output = '';
 			$.each(movies, (index, movie) => {
-				output += `<form action="/addmovie/${movie.imdbID}" method="POST">
-					<div class="card card-body mb-1">
-					<div class="well text-center">
-					<img src="${movie.Poster}"/>
-					<h4>${movie.Title} - ${movie.Year}</h4>
-					<input id=${movie.imdbID} type="submit" value="Add" class="btn btn-success"/>
+				output += `
+					<div class="card border-dark mb-3" style="max-width: 20rem;margin-left: auto;margin-right:auto;">
+					<div class="card-header">${movie.Title} - ${movie.Year}</div>
+					<div class="card-body text-dark" style="margin-left:auto;margin-right:auto;">
+						<img src="${movie.Poster}"/><br>
+						<a href="/addmovie/${movie.imdbID}" class="btn btn-success">Add</a>
 					</div>
 					</div>
-					</form>
 				`;
 			});
 			console.log(output);

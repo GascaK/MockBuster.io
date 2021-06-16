@@ -70,7 +70,7 @@ def dashboard():
     movie_form = UserMovieForm()
 
     # Query Movies DB and get movie data.
-    movies = Movies.query.filter_by(user_id=current_user.id).all()
+    movies = Movies.query.filter_by(user_id=current_user.id).order_by(Movies.m_title).all()
 
     return render_template("dashboard.html", 
                             title=f"{current_user.username}",
@@ -97,7 +97,7 @@ def delete_movie(movie_id):
 
     return redirect(url_for("dashboard"))
 
-@app.route("/addmovie/<imdbID>", methods=["POST"])
+@app.route("/addmovie/<imdbID>", methods=["POST", "GET"])
 @login_required
 def add_movie(imdbID):
     # Find User Movies

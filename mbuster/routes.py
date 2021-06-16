@@ -126,23 +126,29 @@ def add_movie(imdbID):
 def about_us():
     return render_template("about.html", title="AboutME")
 
-@app.route("/contact")
+@app.route("/contact", methods=["POST", "GET"])
 def contact():
+    
     form = ContactForm()
-
     if form.validate_on_submit():
-        pass
+        msg = Message(f"{form.subject.data}",
+                  sender=f"{form.email.data}",
+                  recipients=["gasca.kevin.a@gmail.com"])
+        msg.body = f"{form.content.data}"
+        mail.send(msg)
+        flash("Message sent! Thank you!", "success")
+        return redirect(url_for("index"))
 
     return render_template("contact.html", title="Contact", form=form)
 
 @app.route("/privacy")
 def privacy():
-    return render_template("privacy.html")
+    return render_template("privacy.html", title="Privacy")
 
 @app.route("/reset-password", methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     
     form = RequestResetForm()
     if form.validate_on_submit():

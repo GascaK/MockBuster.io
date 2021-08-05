@@ -30,6 +30,7 @@
 <br><br>
 {% if current_user %}
     <div id="dash-table">
+        <h3>API KEY:</h3><h5>{{ current_user.API_KEY }}</h5>
         <h1>{{ current_user.username }}'s Movies</h1>
             <table class="table table-striped">
               <thead>

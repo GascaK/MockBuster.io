@@ -11,9 +11,10 @@ class User(db.Model, UserMixin):
     username   = db.Column(db.String(20),  unique=True, nullable=False)
     password   = db.Column(db.String(60),  nullable=False)
     email      = db.Column(db.String(120), unique=True, nullable=False)
+    API_KEY    = db.Column(db.String(100), unique=True, nullable=True)
 
     # Movie Relationship.
-    movies = db.relationship("Movies", backref="owner", lazy=True)
+    movies = db.relationship("Movies", backref="owner", lazy="dynamic")
 
     def get_reset_token(self, expires=1800):
         s = Serializer(app.config['SECRET_KEY'], expires)

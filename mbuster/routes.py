@@ -9,6 +9,7 @@ from mbuster import app, db, bcrypt, ia, mail
 from mbuster.models import User, Movies
 from flask_login import login_user, logout_user, current_user
 from flask_mail import Message
+import secrets
 
 @app.route("/")
 @app.route("/home")
@@ -26,12 +27,14 @@ def register():
     if form.validate_on_submit():
         # Hash password.
         hash_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        # API KEY Hash.
+        api_key = secrets.token_urlsafe(16)
         # User DB object.
-        user = User(username=form.username.data, email=form.email.data, password=hash_pw)
+        user = User(username=form.username.data, email=form.email.data, password=hash_pw, API_KEY=api_key)
         db.session.add(user)
         db.session.commit()
         flash(f'Account created! Congrats {form.username.data}!', 'success')
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('login'))
 
     return render_template("register.html", title="Register", form=form)
 

@@ -1,7 +1,11 @@
 language: python
 python:
   - "3.9"
-install:
-  - pip install -r requirements.txt
+
+services:
+  - docker
+
+before_script: pip install docker-compose
+
 script:
-  - python -m unittests tests
+  - docker-compose run app sh -c "python app.py test"

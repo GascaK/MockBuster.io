@@ -29,8 +29,8 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(user_id)
 
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
+    # def __repr__(self):
+    #     return f"User('{self.username}', '{self.email}')"
 
 class Movies(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,5 +40,5 @@ class Movies(db.Model):
     m_stock = db.Column(db.Boolean, nullable=False, default=True)
     imdb_id = db.Column(db.String(20), default="")
 
-    def __repr__(self):
-        return f"Movie('{self.m_title}', '{self.m_stock}')"
+    # def __repr__(self):
+    #     return f"Movie('{self.m_title}', '{self.m_stock}')"

@@ -8,4 +8,8 @@ services:
 before_script: pip install docker-compose
 
 script:
+<<<<<<< HEAD
   - docker-compose up -d
+=======
+  - docker-compose run app sh -c "python app.py tests"
+>>>>>>> master
